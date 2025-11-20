@@ -1,56 +1,63 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لعبة الذكاء: تحدي المراحل</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الذكاء: التحدي المطوّر</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-    <div class="background-pattern"></div>
-    <div class="game-content">
+    <div class="container">
+        <div class="background-pattern"></div>
+        <div class="game-content">
+            <h1>لعبة الذكاء: التحدي المطوّر</h1>
 
-        <h1>لعبة الذكاء: تحدي المراحل</h1>
-
-        <!-- شاشة البداية -->
-        <div id="start-screen" class="screen active">
-            <div class="instructions">
-                <p>مرحباً بك في تحدي المراحل!</p>
-                <p>ستخوض 3 مراحل متتالية: منطق، ذكاء بصري، سرعة.</p>
-                <p>اختر الإجابة الصحيحة من بين الخيارات</p>
-                <p>كل إجابة صحيحة تضيف 10 نقاط لرصيدك</p>
+            <!-- شاشة البداية -->
+            <div id="start-screen" class="screen active">
+                <div class="instructions">
+                    <p>مرحباً بك في التحدي المطوّر!</p>
+                    <p>تحتوي اللعبة على 3 مراحل: المنطق، الذكاء البصري، السرعة.</p>
+                    <p>اختر الإجابة الصحيحة لتحصل على النقاط.</p>
+                    <p>استعد للمرح والتحدي!</p>
+                </div>
+                <button id="start-btn" class="btn">ابدأ التحدي</button>
             </div>
-            <button id="start-btn" class="btn">ابدأ التحدي</button>
-        </div>
 
-        <!-- شاشة اللعبة -->
-        <div id="game-screen" class="screen">
-            <div class="game-header">
-                <div class="score">النقاط: <span id="score-value">0</span></div>
-                <div class="timer">الوقت: <span id="timer-value">60</span> ثانية</div>
+            <!-- شاشة اللعبة -->
+            <div id="game-screen" class="screen">
+                <div class="game-header">
+                    <div class="score">النقاط: <span id="score-value">0</span></div>
+                    <div class="timer">الوقت: <span id="timer-value">60</span> ثانية</div>
+                    <div class="stage">المرحلة: <span id="stage-number">1</span></div>
+                </div>
+
+                <div class="progress-bar">
+                    <div id="progress" class="progress"></div>
+                </div>
+
+                <div id="question" class="question"></div>
+                <div id="options" class="options"></div>
+                <div id="result-message" class="result-message"></div>
             </div>
-            <div class="progress-bar"><div id="progress" class="progress"></div></div>
-            <div id="question" class="question"></div>
-            <div id="options" class="options"></div>
-            <div id="result-message" class="result-message"></div>
+
+            <!-- شاشة النهاية -->
+            <div id="end-screen" class="screen">
+                <h2 class="end-title">انتهى التحدي!</h2>
+                <div class="final-score">
+                    حصلت على <span id="final-score">0</span> نقطة من أصل <span id="total-score">0</span>
+                </div>
+                <div id="performance" class="performance"></div>
+                <div class="celebration" id="celebration"></div>
+                <button id="restart-btn" class="btn">العب مرة أخرى</button>
+            </div>
         </div>
-
-        <!-- شاشة النهاية -->
-        <div id="end-screen" class="screen">
-            <h2 class="end-title">انتهى الوقت!</h2>
-            <div class="final-score">حصلت على <span id="final-score">0</span> نقطة</div>
-            <div id="performance" class="performance"></div>
-            <div class="celebration" id="celebration"></div>
-            <button id="restart-btn" class="btn">العب مرة أخرى</button>
-        </div>
-
-        <div class="flash" id="flash"></div>
-        <audio id="bg-music" loop src="sounds/bg-music.mp3"></audio>
-
     </div>
-</div>
 
-<script src="script.js"></script>
+    <!-- صوتيات وموسيقى -->
+    <audio id="correct-sound" src="sounds/correct.mp3"></audio>
+    <audio id="wrong-sound" src="sounds/wrong.mp3"></audio>
+    <audio id="background-music" src="sounds/background.mp3" loop></audio>
+
+    <script src="script.js"></script>
 </body>
 </html>
