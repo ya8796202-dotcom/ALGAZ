@@ -3,516 +3,626 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة الذكاء: تحدي الألغاز المنطقية</title>
+    <title>لعبة الذكاء - التحدي الكبير</title>
+
+    <!-- خط جميل -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: 'Cairo', sans-serif;
         }
 
-        body {
-            background: linear-gradient(135deg, #0f1e3c, #1a3a6a);
-            color: #e0e0e0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        body{
+            background: radial-gradient(circle at 20% 20%, #051937, #0b2a4f, #0f3b6b);
+            color:white;
+            min-height:100vh;
+            overflow:hidden;
         }
 
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background: rgba(25, 40, 65, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            position: relative;
-            padding: 30px;
+        /* خلفية متحركة */
+        .animated-bg{
+            position:fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(0,255,255,0.15) 2px, transparent 2px),
+                radial-gradient(circle at 90% 60%, rgba(255,0,150,0.15) 2px, transparent 2px);
+            background-size:50px 50px;
+            animation:bgMove 8s linear infinite;
         }
 
-        .background-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(70, 130, 180, 0.1) 2px, transparent 2px),
-                radial-gradient(circle at 80% 70%, rgba(70, 130, 180, 0.1) 2px, transparent 2px);
-            background-size: 40px 40px;
-            z-index: 0;
+        @keyframes bgMove{
+            0%{transform:translate(0,0);}
+            100%{transform:translate(50px,50px);}
         }
 
-        .game-content {
-            position: relative;
-            z-index: 1;
+        .container{
+            position:relative;
+            z-index:5;
+            max-width:900px;
+            margin:40px auto;
+            background:rgba(255,255,255,0.08);
+            padding:30px;
+            border-radius:20px;
+            box-shadow:0 0 25px rgba(0,0,0,0.5);
         }
 
-        h1 {
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            color: #ffffff;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        h1{
+            text-align:center;
+            font-size:3rem;
+            background:linear-gradient(to right,#00eaff,#6b9bff,#ff3ba7);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            margin-bottom:20px;
         }
 
-        .screen {
-            display: none;
-            animation: fadeIn 0.5s ease;
+        .screen{ display:none; animation:fade 0.5s ease; }
+        .active{ display:block; }
+
+        @keyframes fade{
+            from{opacity:0; transform:translateY(15px);}
+            to{opacity:1; transform:translateY(0);}
         }
 
-        .active {
-            display: block;
+        .btn{
+            display:block;
+            width:260px;
+            margin:25px auto;
+            padding:15px;
+            border:none;
+            border-radius:40px;
+            font-size:1.4rem;
+            font-weight:bold;
+            background:linear-gradient(135deg,#008CFF,#00E1FF);
+            cursor:pointer;
+            color:white;
+            transition:0.3s;
+            box-shadow:0 0 12px rgba(0,150,255,0.6);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn:hover{
+            transform:scale(1.06);
+            box-shadow:0 0 20px rgba(0,200,255,0.9);
         }
 
-        .instructions {
-            text-align: center;
-            margin: 30px 0;
-            line-height: 1.8;
-            font-size: 1.2rem;
+        /* شاشة المرحلة B */
+        .level-card{
+            background:rgba(0,0,0,0.4);
+            padding:20px;
+            margin:15px 0;
+            border-radius:12px;
+            border:1px solid rgba(255,255,255,0.2);
+            cursor:pointer;
+            transition:0.3s;
         }
 
-        .instructions p {
-            margin: 15px 0;
-            padding: 10px;
-            background: rgba(40, 70, 120, 0.3);
-            border-radius: 10px;
+        .level-card:hover{
+            background:rgba(255,255,255,0.1);
+            transform:scale(1.02);
         }
 
-        .btn {
-            display: block;
-            width: 250px;
-            margin: 25px auto;
-            padding: 15px;
-            background: linear-gradient(to right, #2868d1, #3a86ff);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        .question{
+            font-size:1.7rem;
+            padding:20px;
+            text-align:center;
+            background:rgba(255,255,255,0.1);
+            margin:25px 0;
+            border-radius:12px;
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(to right, #3a86ff, #4facfe);
+        .options{
+            display:grid;
+            gap:15px;
         }
 
-        .btn:active {
-            transform: translateY(1px);
+        .option{
+            padding:15px;
+            border-radius:12px;
+            background:rgba(255,255,255,0.12);
+            cursor:pointer;
+            transition:0.3s;
+            text-align:center;
+            font-size:1.2rem;
+            border:1px solid transparent;
         }
 
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: rgba(30, 50, 90, 0.7);
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        .option:hover{
+            background:rgba(255,255,255,0.25);
+            transform:scale(1.03);
         }
 
-        .score, .timer {
-            font-size: 1.4rem;
-            font-weight: bold;
+        .correct{ background:#1cbb6c !important; }
+        .wrong{ background:#d64545 !important; }
+
+        .result{
+            text-align:center;
+            height:40px;
+            font-size:1.4rem;
+            margin-top:10px;
         }
 
-        .timer {
-            color: #ff9a3c;
+        /* موسيقى */
+        audio{ display:none; }
+
+        /* مؤثر بصري – وميض عند تبديل المراحل */
+        .flash {
+            position: fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background:white;
+            opacity:0;
+            pointer-events:none;
+            z-index:9999;
+        }
+        .flash.active{
+            animation:flashAnim 0.4s forwards;
+        }
+        @keyframes flashAnim{
+            0%{opacity:0;}
+            50%{opacity:1;}
+            100%{opacity:0;}
         }
 
-        .question {
-            font-size: 1.5rem;
-            margin: 30px 0;
-            padding: 20px;
-            background: rgba(40, 70, 120, 0.4);
-            border-radius: 12px;
-            line-height: 1.6;
-            text-align: center;
-        }
-
-        .options {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin: 30px 0;
-        }
-
-        .option {
-            padding: 18px;
-            background: rgba(50, 90, 150, 0.5);
-            border: 2px solid #4682b4;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-        }
-
-        .option:hover {
-            background: rgba(60, 110, 180, 0.7);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .correct {
-            background: rgba(40, 180, 100, 0.7);
-            border-color: #28b464;
-        }
-
-        .wrong {
-            background: rgba(220, 80, 80, 0.7);
-            border-color: #dc5050;
-        }
-
-        .result-message {
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin: 20px 0;
-            height: 40px;
-        }
-
-        .correct-message {
-            color: #28b464;
-        }
-
-        .wrong-message {
-            color: #dc5050;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: rgba(70, 130, 180, 0.3);
-            border-radius: 5px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            border-radius: 5px;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .end-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin: 20px 0;
-            color: #ff9a3c;
-        }
-
-        .final-score {
-            text-align: center;
-            font-size: 1.8rem;
-            margin: 30px 0;
-        }
-
-        .performance {
-            text-align: center;
-            font-size: 1.4rem;
-            margin: 30px 0;
-            padding: 20px;
-            background: rgba(40, 70, 120, 0.4);
-            border-radius: 12px;
-            line-height: 1.6;
-        }
-
-        .celebration {
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        .firework {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin: 0 5px;
-            animation: firework 1.5s infinite;
-        }
-
-        @keyframes firework {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-30px); opacity: 0; }
-        }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <div class="background-pattern"></div>
-        <div class="game-content">
-            <h1>لعبة الذكاء: تحدي الألغاز المنطقية</h1>
+<div class="animated-bg"></div>
 
-            <!-- شاشة البداية -->
-            <div id="start-screen" class="screen active">
-                <div class="instructions">
-                    <p>مرحباً بك في تحدي الألغاز المنطقية!</p>
-                    <p>سوف تواجه سلسلة من الألغاز الذكية</p>
-                    <p>اختر الإجابة الصحيحة من بين الخيارات</p>
-                    <p>لديك 60 ثانية للإجابة على أكبر عدد ممكن</p>
-                    <p>كل إجابة صحيحة تضيف 10 نقاط لرصيدك</p>
-                </div>
-                <button id="start-btn" class="btn">ابدأ التحدي</button>
-            </div>
+<!-- فلاش بصري -->
+<div id="flash" class="flash"></div>
 
-            <!-- شاشة اللعبة -->
-            <div id="game-screen" class="screen">
+<div class="container">
 
-                <div class="game-header">
-                    <div class="score">النقاط: <span id="score-value">0</span></div>
-                    <div class="timer">الوقت: <span id="timer-value">60</span> ثانية</div>
-                </div>
+    <h1>لعبة الذكاء: التحدي الكبير</h1>
 
-                <div class="progress-bar">
-                    <div id="progress" class="progress"></div>
-                </div>
+    <!-- شاشة البداية -->
+    <div id="start-screen" class="screen active">
+        <p style="text-align:center; font-size:1.3rem; margin:20px 0;">
+            جاهز لاختبار دماغك؟ 👀  
+            اضغط ابدأ لبدأ المغامرة!
+        </p>
 
-                <div id="question" class="question"></div>
-
-                <div id="options" class="options"></div>
-
-                <div id="result-message" class="result-message"></div>
-
-            </div>
-
-            <!-- شاشة النهاية -->
-            <div id="end-screen" class="screen">
-                <h2 class="end-title">انتهى الوقت!</h2>
-
-                <div class="final-score">
-                    حصلت على <span id="final-score">0</span> نقطة من أصل <span id="total-score">80</span>
-                </div>
-
-                <div id="performance" class="performance"></div>
-
-                <div class="celebration" id="celebration"></div>
-
-                <button id="restart-btn" class="btn">العب مرة أخرى</button>
-            </div>
-        </div>
+        <button id="start-btn" class="btn">ابدأ التحدي</button>
     </div>
 
-    <script>
+    <!-- شاشة اختيار المراحل (الخيار B) -->
+    <div id="levels-screen" class="screen">
+        <h2 style="text-align:center; margin:20px 0;">اختر المرحلة</h2>
 
-        const puzzles = [
-            {
-                question: "إذا كان 5 رجال يحتاجون 5 دقائق لصنع 5 كراسي، فكم دقيقة يحتاج 10 رجال لصنع 10 كراسي؟",
-                options: ["5 دقائق", "10 دقائق", "15 دقائق", "20 دقائق"],
-                answer: 0
-            },
-            {
-                question: "ما هو الرقم التالي في التسلسل: 1, 1, 2, 3, 5, 8, 13, ...؟",
-                options: ["18", "21", "23", "25"],
-                answer: 1
-            },
-            {
-                question: "أب عمره 45 سنة وابنه عمره 15 سنة. بعد كم سنة يصبح عمر الأب ضعف عمر الابن؟",
-                options: ["10 سنوات", "15 سنوات", "20 سنوات", "25 سنوات"],
-                answer: 1
-            },
-            {
-                question: "إذا كان سعر كتاب 20 دولاراً بعد خصم 20%، فما كان سعره الأصلي؟",
-                options: ["22 دولار", "24 دولار", "25 دولار", "28 دولار"],
-                answer: 2
-            },
-            {
-                question: "ما هو الشكل المختلف في المجموعة التالية: مربع، مثلث، دائرة، مكعب؟",
-                options: ["مربع", "مثلث", "دائرة", "مكعب"],
-                answer: 3
-            },
-            {
-                question: "إذا كان اليوم الأربعاء، فما اليوم بعد 100 يوم من الآن؟",
-                options: ["الخميس", "الجمعة", "السبت", "الأحد"],
-                answer: 1
-            },
-            {
-                question: "أي كلمة لا تنتمي للمجموعة: تفاح، موز، برتقال، جزر؟",
-                options: ["تفاح", "موز", "برتقال", "جزر"],
-                answer: 3
-            },
-            {
-                question: "ما هو الرقم المفقود: 2, 6, 12, 20, 30, ?",
-                options: ["40", "42", "44", "46"],
-                answer: 1
-            }
-        ];
+        <div class="level-card" data-level="1">🔹 المرحلة 1 — أسئلة منطق</div>
+        <div class="level-card" data-level="2">🔸 المرحلة 2 — ذكاء بصري</div>
+        <div class="level-card" data-level="3">🔻 المرحلة 3 — أسئلة سرعة</div>
+    </div>
 
-        let currentPuzzle = 0;
-        let score = 0;
-        let timeLeft = 60;
-        let timer;
-        let gameActive = false;
+    <!-- شاشة اللعبة -->
+    <div id="game-screen" class="screen">
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="result" id="result"></div>
+    </div>
 
-        const startScreen = document.getElementById('start-screen');
-        const gameScreen = document.getElementById('game-screen');
-        const endScreen = document.getElementById('end-screen');
-        const startBtn = document.getElementById('start-btn');
-        const restartBtn = document.getElementById('restart-btn');
-        const scoreValue = document.getElementById('score-value');
-        const timerValue = document.getElementById('timer-value');
-        const questionElement = document.getElementById('question');
-        const optionsElement = document.getElementById('options');
-        const resultMessage = document.getElementById('result-message');
-        const finalScore = document.getElementById('final-score');
-        const totalScore = document.getElementById('total-score');
-        const performanceElement = document.getElementById('performance');
-        const celebrationElement = document.getElementById('celebration');
-        const progressBar = document.getElementById('progress');
+    <!-- شاشة النهاية -->
+    <div id="end-screen" class="screen">
+        <h2 style="text-align:center; margin:15px 0; font-size:2.5rem;">انتهى التحدي 🎉</h2>
 
-        startBtn.addEventListener('click', startGame);
-        restartBtn.addEventListener('click', restartGame);
+        <div id="score-text" style="text-align:center; font-size:1.6rem;"></div>
 
-        function startGame() {
-            startScreen.classList.remove('active');
-            gameScreen.classList.add('active');
+        <button id="restart-btn" class="btn">العودة للبداية</button>
+    </div>
 
-            currentPuzzle = 0;
-            score = 0;
-            timeLeft = 60;
-            gameActive = true;
+</div>
 
-            updateScore();
-            updateTimer();
-            loadPuzzle();
+<!-- موسيقى خلفية -->
+<audio id="bg-music" loop>
+    <source src="https://files.catbox.moe/9m1l9k.mp3" type="audio/mpeg">
+</audio>
+<script>
 
-            timer = setInterval(updateTimer, 1000);
+// عناصر DOM
+const startBtn = document.getElementById("start-btn");
+const startScreen = document.getElementById("start-screen");
+const levelsScreen = document.getElementById("levels-screen");
+const gameScreen = document.getElementById("game-screen");
+const endScreen = document.getElementById("end-screen");
+const levelCards = document.querySelectorAll(".level-card");
+const questionElement = document.getElementById("question");
+const optionsElement = document.getElementById("options");
+const resultElement = document.getElementById("result");
+const restartBtn = document.getElementById("restart-btn");
+const scoreText = document.getElementById("score-text");
+const flash = document.getElementById("flash");
+
+// الموسيقى
+const bgMusic = document.getElementById("bg-music");
+
+// بيانات المراحل
+let currentLevel = 1;
+let currentQuestion = 0;
+let score = 0;
+
+/* -----------------------------------------------------
+        ⭐ المرحلة 1 — أسئلة منطق  
+----------------------------------------------------- */
+const level1Questions = [
+    {
+        q: "إذا كان 5 رجال يصنعون 5 كراسي في 5 دقائق، كم يحتاج 10 رجال لصنع 10 كراسي؟",
+        options: ["5 دقائق", "10 دقائق", "15 دقيقة", "20 دقيقة"],
+        answer: 0
+    },
+    {
+        q: "ما هو الرقم التالي؟ 1, 1, 2, 3, 5, 8, 13...",
+        options: ["18", "21", "23", "25"],
+        answer: 1
+    },
+    {
+        q: "أب عمره 40 وابنه 10، بعد كم سنة يصبح عمر الأب ضعف الابن؟",
+        options: ["5 سنوات", "10 سنوات", "15 سنة", "20 سنة"],
+        answer: 1
+    },
+    {
+        q: "قطار يسير بسرعة 60 كم/س، كم يقطع خلال 2.5 ساعة؟",
+        options: ["120 كم", "130 كم", "140 كم", "150 كم"],
+        answer: 0
+    },
+    {
+        q: "كم عدد الزوايا في 3 مثلثات؟",
+        options: ["6", "9", "12", "3"],
+        answer: 1
+    }
+];
+
+
+// تشغيل الموسيقى عند البدء
+startBtn.addEventListener("click", () => {
+    bgMusic.play().catch(()=>{});
+    changeScreen(startScreen, levelsScreen);
+});
+
+// اختيار المرحلة
+levelCards.forEach(card => {
+    card.addEventListener("click", () => {
+        currentLevel = parseInt(card.dataset.level);
+        startLevel();
+    });
+});
+
+// بدء أي مرحلة
+function startLevel(){
+    flashEffect(); // وميض بصري
+    score = 0;
+    currentQuestion = 0;
+
+    changeScreen(levelsScreen, gameScreen);
+
+    if(currentLevel === 1){
+        loadQuestion(level1Questions);
+    }
+}
+
+/* -----------------------------------------------------
+              دالة تحميل السؤال للمراحل
+----------------------------------------------------- */
+function loadQuestion(levelData){
+    const q = levelData[currentQuestion];
+
+    questionElement.textContent = q.q;
+    optionsElement.innerHTML = "";
+    resultElement.textContent = "";
+
+    q.options.forEach((opt, i)=>{
+        const div = document.createElement("div");
+        div.className = "option";
+        div.textContent = opt;
+
+        div.addEventListener("click", () => {
+            checkAnswer(i, q.answer, levelData, div);
+        });
+
+        optionsElement.appendChild(div);
+    });
+}
+
+/* -----------------------------------------------------
+              دالة التحقق من الإجابة
+----------------------------------------------------- */
+function checkAnswer(selected, correct, data, element){
+    const options = document.querySelectorAll(".option");
+
+    options.forEach(o => o.style.pointerEvents = "none");
+
+    if(selected === correct){
+        element.classList.add("correct");
+        score += 10;
+        resultElement.textContent = "إجابة صحيحة ✔️ +10";
+    } else {
+        element.classList.add("wrong");
+        options[correct].classList.add("correct");
+        resultElement.textContent = "إجابة خاطئة ✖️";
+    }
+
+    setTimeout(()=>{
+        currentQuestion++;
+        if(currentQuestion < data.length){
+            loadQuestion(data);
+        }else{
+            finishLevel();
         }
+    }, 1500);
+}
 
-        function restartGame() {
-            endScreen.classList.remove('active');
-            startScreen.classList.add('active');
+/* -----------------------------------------------------
+                      نهاية المرحلة
+----------------------------------------------------- */
+function finishLevel(){
+    flashEffect();
+    changeScreen(gameScreen, endScreen);
+    scoreText.textContent = `نتيجتك في المرحلة ${currentLevel}: ${score} نقطة`;
+}
+
+/* -----------------------------------------------------
+                      إعادة اللعب
+----------------------------------------------------- */
+restartBtn.addEventListener("click", () => {
+    changeScreen(endScreen, startScreen);
+});
+
+/* -----------------------------------------------------
+                     تبديل الشاشات
+----------------------------------------------------- */
+function changeScreen(hide, show){
+    hide.classList.remove("active");
+    show.classList.add("active");
+}
+
+/* -----------------------------------------------------
+                 مؤثر الوميض البصري
+----------------------------------------------------- */
+function flashEffect(){
+    flash.classList.add("active");
+    setTimeout(()=> flash.classList.remove("active"), 400);
+}
+
+<script>
+
+/* -----------------------------------------------------
+        ⭐ المرحلة 2 — اختبار الذكاء البصري
+----------------------------------------------------- */
+
+const level2Questions = [
+    {
+        type: "visual",
+        q: "كم عدد المثلثات في الصورة؟",
+        img: "https://i.imgur.com/hJv8f32.png",
+        options: ["10", "12", "18", "20"],
+        answer: 2
+    },
+    {
+        type: "visual",
+        q: "أي خطين متوازيان؟",
+        img: "https://i.imgur.com/cyJ9N5a.png",
+        options: ["A و B", "C و D", "A و D", "B و C"],
+        answer: 1
+    },
+    {
+        type: "visual",
+        q: "كم وجه مرئي في المكعبات؟",
+        img: "https://i.imgur.com/KjJkhNI.png",
+        options: ["7", "8", "9", "10"],
+        answer: 3
+    }
+];
+
+/* -----------------------------------------------------
+        ⭐ المرحلة 3 — أسئلة سرعة (20 ثانية فقط)
+----------------------------------------------------- */
+
+let speedTime = 20;
+let speedTimer;
+
+const level3Questions = [
+    {
+        q: "كم حاصل 12 × 3 + 6؟",
+        options: ["36", "42", "30", "48"],
+        answer: 1
+    },
+    {
+        q: "أسرع: أي كلمة مكتوبة بشكل صحيح؟",
+        options: ["تكنلوجيا", "تكنولوجيا", "تكنولجيا", "تكنولوجيه"],
+        answer: 1
+    },
+    {
+        q: "كم حرف في كلمة (استثنائي)؟",
+        options: ["9", "8", "10", "11"],
+        answer: 0
+    },
+    {
+        q: "اكمل: 3 ، 6 ، 12 ، 24 ، … ؟",
+        options: ["36", "44", "48", "50"],
+        answer: 2
+    }
+];
+
+
+/* -----------------------------------------------------
+           دمج المراحل داخل startLevel()
+----------------------------------------------------- */
+
+function startLevel(){
+    flashEffect();
+    score = 0;
+    currentQuestion = 0;
+
+    changeScreen(levelsScreen, gameScreen);
+
+    if(currentLevel === 1){
+        loadQuestion(level1Questions);
+    } 
+    else if(currentLevel === 2){
+        loadVisual(level2Questions);
+    }
+    else if(currentLevel === 3){
+        startSpeedMode();
+    }
+}
+
+
+/* -----------------------------------------------------
+            ⭐ تحميل سؤال المرحلة 2 (بصري)
+----------------------------------------------------- */
+
+function loadVisual(levelData){
+    const q = levelData[currentQuestion];
+
+    questionElement.innerHTML = `${q.q} <br><br> <img src="${q.img}" style="max-width:100%; border-radius:12px; margin-top:10px;">`;
+
+    optionsElement.innerHTML = "";
+    resultElement.textContent = "";
+
+    q.options.forEach((opt, i)=>{
+        const div = document.createElement("div");
+        div.className = "option";
+        div.textContent = opt;
+
+        div.addEventListener("click", () => {
+            checkAnswer2(i, q.answer, levelData, div);
+        });
+
+        optionsElement.appendChild(div);
+    });
+}
+
+function checkAnswer2(selected, correct, data, element){
+    const options = document.querySelectorAll(".option");
+
+    options.forEach(o => o.style.pointerEvents = "none");
+
+    if(selected === correct){
+        element.classList.add("correct");
+        score += 10;
+        resultElement.textContent = "إجابة صحيحة ✔️ +10";
+    } else {
+        element.classList.add("wrong");
+        options[correct].classList.add("correct");
+        resultElement.textContent = "إجابة خاطئة ✖️";
+    }
+
+    setTimeout(()=>{
+        currentQuestion++;
+        if(currentQuestion < data.length){
+            loadVisual(data);
+        }else{
+            finishLevel();
         }
+    }, 1500);
+}
 
-        function updateTimer() {
-            timeLeft--;
-            timerValue.textContent = timeLeft;
 
-            const progressPercent = ((60 - timeLeft) / 60) * 100;
-            progressBar.style.width = `${progressPercent}%`;
+/* -----------------------------------------------------
+            ⭐ المرحلة 3 — وضع السرعة
+----------------------------------------------------- */
 
-            if (timeLeft <= 0) {
-                endGame();
-            }
+function startSpeedMode(){
+    speedTime = 20;
+    currentQuestion = 0;
+
+    updateSpeedTimer();
+    speedTimer = setInterval(updateSpeedTimer, 1000);
+
+    loadSpeedQuestion();
+}
+
+function updateSpeedTimer(){
+    questionElement.textContent = `⏳ الوقت المتبقي: ${speedTime} ثانية`;
+    speedTime--;
+
+    if(speedTime < 0){
+        clearInterval(speedTimer);
+        finishLevel();
+    }
+}
+
+function loadSpeedQuestion(){
+    const q = level3Questions[currentQuestion];
+
+    questionElement.textContent = q.q;
+    optionsElement.innerHTML = "";
+    resultElement.textContent = "";
+
+    q.options.forEach((opt, i)=>{
+        const div = document.createElement("div");
+        div.className = "option";
+        div.textContent = opt;
+
+        div.addEventListener("click", () => {
+            checkSpeed(i, q.answer);
+        });
+
+        optionsElement.appendChild(div);
+    });
+}
+
+function checkSpeed(selected, correct){
+    const options = document.querySelectorAll(".option");
+    options.forEach(o => o.style.pointerEvents = "none");
+
+    if(selected === correct){
+        score += 10;
+        resultElement.textContent = "✔️";
+    } else {
+        resultElement.textContent = "✖️";
+    }
+
+    setTimeout(()=>{
+        currentQuestion++;
+        if(currentQuestion < level3Questions.length && speedTime > 0){
+            loadSpeedQuestion();
+        } else {
+            clearInterval(speedTimer);
+            finishLevel();
         }
+    }, 600);
+}
 
-        function updateScore() {
-            scoreValue.textContent = score;
-        }
 
-        function loadPuzzle() {
-            if (currentPuzzle >= puzzles.length) {
-                endGame();
-                return;
-            }
+/* -----------------------------------------------------
+            ⭐ تحسين شاشة النهاية وتمييز الأداء
+----------------------------------------------------- */
 
-            const puzzle = puzzles[currentPuzzle];
-            questionElement.textContent = puzzle.question;
+function finishLevel(){
+    flashEffect();
 
-            optionsElement.innerHTML = '';
-            resultMessage.textContent = '';
-            resultMessage.className = 'result-message';
+    let message = "";
 
-            puzzle.options.forEach((option, index) => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'option';
-                optionElement.textContent = option;
-                optionElement.addEventListener('click', () => checkAnswer(index));
-                optionsElement.appendChild(optionElement);
-            });
-        }
+    if(score >= 80) message = "أنت عبقري! 🔥💡";
+    else if(score >= 50) message = "أداء ممتاز! 👏";
+    else if(score >= 30) message = "جيد ويمكنك التحسن ⚡";
+    else message = "تستطيع الأفضل 🌱";
 
-        function checkAnswer(selectedIndex) {
-            if (!gameActive) return;
+    scoreText.innerHTML = `
+        <br> مجموع نقاطك: <strong>${score}</strong>  
+        <br><br> ${message}
+    `;
 
-            const puzzle = puzzles[currentPuzzle];
-            const options = document.querySelectorAll('.option');
+    changeScreen(gameScreen, endScreen);
+}
 
-            options.forEach(option => {
-                option.style.pointerEvents = 'none';
-            });
 
-            if (selectedIndex === puzzle.answer) {
-                options[selectedIndex].classList.add('correct');
-                resultMessage.textContent = 'إجابة صحيحة! +10 نقاط';
-                resultMessage.classList.add('correct-message');
-                score += 10;
-                updateScore();
-            } else {
-                options[selectedIndex].classList.add('wrong');
-                options[puzzle.answer].classList.add('correct');
-                resultMessage.textContent = 'إجابة خاطئة!';
-                resultMessage.classList.add('wrong-message');
-            }
+/* -----------------------------------------------------
+    ⭐ مؤثرات صوتية عند الضغط على الخيارات
+----------------------------------------------------- */
 
-            setTimeout(() => {
-                currentPuzzle++;
-                if (currentPuzzle < puzzles.length && timeLeft > 0) {
-                    loadPuzzle();
-                } else {
-                    endGame();
-                }
-            }, 2000);
-        }
+const clickSound = new Audio("https://files.catbox.moe/ykp8yn.mp3");
 
-        function endGame() {
-            gameActive = false;
-            clearInterval(timer);
+document.addEventListener("click", () => {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(()=>{});
+}, { capture: true });
 
-            gameScreen.classList.remove('active');
-            endScreen.classList.add('active');
+</script>
 
-            finalScore.textContent = score;
-            totalScore.textContent = puzzles.length * 10;
-
-            let performanceText = '';
-            if (score >= 70) {
-                performanceText = 'مستوى عبقري! أنت ذكي حقاً!';
-                createFireworks();
-            } else if (score >= 50) {
-                performanceText = 'أداء جيد! لديك مهارات تفكير منطقي ممتازة.';
-            } else if (score >= 30) {
-                performanceText = 'ليس سيئاً! يمكنك تحسين مهاراتك بالممارسة.';
-            } else {
-                performanceText = 'تحتاج إلى تطوير مهارات التفكير المنطقي لديك.';
-            }
-
-            performanceElement.textContent = performanceText;
-        }
-
-        function createFireworks() {
-            celebrationElement.innerHTML = '';
-            for (let i = 0; i < 50; i++) {
-                const firework = document.createElement('div');
-                firework.className = 'firework';
-                firework.style.backgroundColor = getRandomColor();
-                firework.style.animationDelay = `${Math.random() * 1.5}s`;
-                celebrationElement.appendChild(firework);
-            }
-        }
-
-        function getRandomColor() {
-            const colors = ['#ff9a3c', '#ff6b6b', '#4ecdff', '#6bff6b', '#ff4cd9'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-
-    </script>
-
-</body>
-</html>
