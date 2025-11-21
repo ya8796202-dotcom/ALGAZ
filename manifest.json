@@ -1,7 +1,7 @@
 {
   "name": "ALGAZ",
   "short_name": "ALGAZ",
-  "start_url": "index.html",
+  "start_url": "ALGAZ/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0f0f0f",
