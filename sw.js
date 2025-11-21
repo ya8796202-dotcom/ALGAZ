@@ -1,10 +1,10 @@
 const CACHE_NAME = 'my-pwa-cache-v1';
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  'ALGAZ/index.html',
+  'ALGAZ/manifest.json',
+  'ALGAZ/icons/icon-192.png',
+  'ALGAZ/icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
