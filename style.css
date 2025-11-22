@@ -20,3 +20,39 @@ body {
   transform: scale(1.05);
   box-shadow: 0 6px 14px rgba(0,0,0,0.3);
 }
+@media (max-width: 480px) {
+  body {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .install-btn {
+    font-size: 14px;
+    padding: 10px 16px;
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  /* لو عندك عناصر جانبية أو أعمدة */
+  .sidebar, .column {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  /* لو فيه صور كبيرة */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* لو فيه جداول أو بطاقات */
+  .card, .box {
+    width: 100%;
+    padding: 10px;
+  }
+}
