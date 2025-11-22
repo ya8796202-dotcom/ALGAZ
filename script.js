@@ -24,3 +24,10 @@ window.addEventListener("beforeinstallprompt", (e) => {
     });
   });
 });
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  console.log("📦 beforeinstallprompt fired");
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = "inline-block";
+});
