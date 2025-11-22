@@ -588,6 +588,10 @@ function getRandomColor(){
     const colors=['#ff9a3c','#ff6b6b','#4ecdff','#6bff6b','#ff4cd9'];
     return colors[Math.floor(Math.random()*colors.length)];
 }
+    if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+
 </script>
 </body>
 </html>
