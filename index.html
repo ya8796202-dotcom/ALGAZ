@@ -3,16 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>تعلم برمجة الأردوينو - دروس مع صفحات فرعية</title>
+  <title>تعلم برمجة الأردوينو — نسخة موسّعة</title>
   <meta name="theme-color" content="#0aa2b8" />
   <style>
     :root {
       --bg1: #121423; --bg2: #1a1d2f;
       --glass: rgba(255,255,255,0.08);
       --border: rgba(255,255,255,0.18);
-      --accent: #0aa2b8; --accent-2: #4caf50; --danger: #b00020;
+      --accent: #0aa2b8; --accent-2: #4caf50; --danger: #b00020; --warn: #ff9800;
       --text: #e9f1f7; --muted: #a9b7c6;
       --code-bg: #0e1217; --code-txt: #b5f5ff;
+    }
+    [data-theme="light"] {
+      --bg1: #eef3f7; --bg2: #ffffff;
+      --glass: rgba(255,255,255,0.75);
+      --border: rgba(0,0,0,0.12);
+      --text: #0f1b28; --muted: #425364;
+      --code-bg: #f8fafc; --code-txt: #0f1b28;
     }
     * { box-sizing: border-box }
     body {
@@ -30,7 +37,7 @@
       background: var(--glass);
       border-bottom: 1px solid var(--border);
     }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 18px }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 18px }
     .brand { display: flex; align-items: center; gap: 12px }
     .logo {
       width: 42px; height: 42px; border-radius: 12px;
@@ -46,20 +53,21 @@
       border: 1px solid var(--border); background: rgba(255,255,255,0.06);
       font-size: .9rem;
     }
-    .nav-link.active { background: var(--accent); border-color: transparent }
+    .nav-link.active { background: var(--accent); border-color: transparent; color: white }
     main { padding: 18px 0 }
     .grid { display: grid; gap: 18px; grid-template-columns: 1fr }
     @media (min-width: 980px) { .grid { grid-template-columns: 2fr 1fr } }
     section.card {
       background: var(--glass); backdrop-filter: blur(16px);
       border: 1px solid var(--border); border-radius: 18px; padding: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
     }
     section.card h2 { margin: 0 0 12px 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px }
     p { color: var(--muted); line-height: 1.7 }
     video, .media { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--border) }
     .lessons-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
-    @media (min-width: 700px) { .lessons-grid { grid-template-columns: 1fr 1fr } }
+    @media (min-width: 720px) { .lessons-grid { grid-template-columns: 1fr 1fr } }
+    @media (min-width: 1024px) { .lessons-grid { grid-template-columns: 1fr 1fr 1fr } }
     .lesson-card {
       background: rgba(255,255,255,0.07); border: 1px solid var(--border); border-radius: 14px;
       padding: 14px; display: flex; flex-direction: column; gap: 8px;
@@ -75,7 +83,7 @@
     pre { margin: 0; white-space: pre-wrap }
     textarea {
       width: 100%; min-height: 160px; background: var(--code-bg);
-      color: #8cf5a8; font-family: ui-monospace, Menlo, Consolas, monospace;
+      color: #2c7a3f; font-family: ui-monospace, Menlo, Consolas, monospace;
       padding: 12px; border-radius: 12px; border: 1px solid #18202b;
     }
     .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px }
@@ -83,28 +91,43 @@
       appearance: none; background: var(--accent); color: white; border: none; border-radius: 10px;
       padding: 10px 14px; cursor: pointer; font-weight: 600; box-shadow: 0 8px 20px rgba(10,162,184,0.35);
     }
-    button.secondary { background: #2f3545 }
+    button.secondary { background: #2f3545; color: #fff }
     button.success { background: var(--accent-2) }
     button.danger { background: var(--danger) }
+    button.warn { background: var(--warn); color: #1c1300 }
     .alert {
       padding: 10px 12px; border-radius: 10px; background: rgba(76,175,80,.12);
-      border: 1px solid rgba(76,175,80,.4); color: #b8f5c3; margin: 10px 0; display: none;
+      border: 1px solid rgba(76,175,80,.4); color: #2e7d32; margin: 10px 0; display: none;
     }
     .install-banner { display: none; align-items: center; gap: 10px; margin: 10px 0; padding: 10px; border-radius: 12px; border: 1px dashed var(--border); background: rgba(255,255,255,0.06) }
     .kbd { font-family: ui-monospace, Menlo, Consolas, monospace; background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 6px; border: 1px solid var(--border) }
     footer { margin-top: 18px; border-top: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(12px) }
     .muted { color: var(--muted) }
+    .progress-wrap { display:flex; align-items:center; gap:12px; flex-wrap:wrap }
+    .progress-bar { width: 220px; height: 10px; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden; border: 1px solid var(--border) }
+    .progress-bar > div { height: 100%; background: var(--accent-2); width: 0% }
+    .badge { padding: 6px 10px; border-radius: 999px; border:1px solid var(--border); display:inline-flex; align-items:center; gap:6px; background: rgba(255,255,255,0.06) }
+    /* تلوين نحوي بسيط */
+    .hl .kw { color:#c792ea; font-weight:600 }
+    .hl .fn { color:#82aaff }
+    .hl .num { color:#f78c6c }
+    .hl .str { color:#aeea00 }
+    .hl .com { color:#94a3b8; font-style:italic }
+    /* مخطط بسيط */
+    .chart { width:100%; height:180px; border:1px solid var(--border); border-radius:12px; background: rgba(255,255,255,0.06) }
+    /* إمكانية الوصول: تركيز واضح */
+    :focus-visible { outline: 3px solid #ffcc00; outline-offset: 2px }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap brand">
-      <div class="logo" id="dynamic-logo">A</div>
+      <div class="logo" id="dynamic-logo" aria-hidden="true">A</div>
       <div>
         <h1>تعلم برمجة الأردوينو</h1>
-        <div class="pill">واجهة زجاجية • ملف واحد • دروس بصفحات فرعية • يدعم التثبيت كتطبيق</div>
+        <div class="pill" id="subtitle">واجهة زجاجية • SPA • ملف واحد • ميزات متقدمة</div>
         <nav>
-          <a href="#/" class="nav-link" data-link="home">الرئيسية</a>
+          <a href="#/" class="nav-link" data-link="home" aria-label="الانتقال إلى الرئيسية">الرئيسية</a>
           <a href="#/lesson/1" class="nav-link" data-link="l1">درس 1</a>
           <a href="#/lesson/2" class="nav-link" data-link="l2">درس 2</a>
           <a href="#/lesson/3" class="nav-link" data-link="l3">درس 3</a>
@@ -115,16 +138,54 @@
           <a href="#/lesson/8" class="nav-link" data-link="l8">درس 8</a>
           <a href="#/lesson/9" class="nav-link" data-link="l9">درس 9</a>
           <a href="#/lesson/10" class="nav-link" data-link="l10">درس 10</a>
+          <button id="themeToggle" class="secondary" aria-label="تبديل الثيم">تبديل الثيم</button>
+          <button id="exportBtn" class="warn">تصدير التقدم</button>
+          <button id="importBtn" class="warn">استيراد التقدم</button>
         </nav>
       </div>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- صفحة رئيسية -->
+    <!-- لوحة نظرة عامة -->
+    <section class="card" id="overview">
+      <h2>📊 نظرة عامة وتقدّمك</h2>
+      <div class="grid">
+        <div>
+          <div class="progress-wrap">
+            <div class="badge">الدروس المكتملة: <span id="completedCount">0</span> / <span id="totalCount">10</span></div>
+            <div class="progress-bar" aria-label="شريط التقدم"><div id="progressBar"></div></div>
+            <div class="badge">آخر نشاط: <span id="lastActivity">—</span></div>
+          </div>
+          <canvas id="progressChart" class="chart" aria-label="مخطط التقدم"></canvas>
+        </div>
+        <div>
+          <div class="badge">بادجاتك:</div>
+          <div id="badges" style="display:flex; gap:8px; flex-wrap:wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- بحث -->
+    <section class="card" id="searchSection">
+      <h2>🔎 بحث في الدروس</h2>
+      <div class="grid">
+        <div>
+          <input id="searchInput" type="search" placeholder="ابحث عن درس أو مصطلح (PWM, I2C, Servo)..." style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border)" />
+          <p class="muted" id="searchHint">نتائج البحث ستظهر أسفلًا مع إبراز الكلمات.</p>
+          <div class="lessons-grid" id="searchResults"></div>
+        </div>
+        <div>
+          <div class="pill">نصيحة</div>
+          <p>اكتب كلمات مفتاحية قصيرة. يمكنك الجمع بين كلمات متعددة وسيتم إبرازها في النص.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- صفحة رئيسية قائمة الدروس -->
     <section class="card" id="homePage">
-      <h2>📚 الدروس</h2>
-      <p class="muted">اختَر درسًا لبدء التعلم. كل درس يحتوي على فيديو، شرح، محرر كود للتجربة، امتحان متابعة، وملاحظاتك الخاصة.</p>
+      <h2>📚 قائمة الدروس</h2>
+      <p class="muted">اختر درسًا لبدء التعلم. كل درس يحتوي على فيديو، شرح، محرر كود، امتحان متابعة، وملاحظاتك الخاصة.</p>
       <div class="lessons-grid" id="lessonsList"></div>
     </section>
 
@@ -134,26 +195,40 @@
       <div class="grid">
         <div>
           <h3>🎥 فيديو الدرس</h3>
-          <video class="media" controls id="lessonVideo">
+          <video class="media" controls id="lessonVideo" preload="none">
             <source id="lessonVideoSrc" src="" type="video/mp4" />
             متصفحك لا يدعم الفيديو.
           </video>
           <p id="lessonIntro" class="muted"></p>
 
           <h3>💻 تجربة الكود</h3>
-          <textarea id="lessonEditor"></textarea>
           <div class="btns">
-            <button id="runLessonBtn">تشغيل افتراضي</button>
+            <button id="templateBlink">قالب: Blink</button>
+            <button id="templateButton" class="secondary">قالب: Button</button>
+            <button id="templateServo" class="secondary">قالب: Servo</button>
+            <button id="templateSensor" class="secondary">قالب: Sensor</button>
+          </div>
+          <div class="code hl" id="highlighted"><pre id="highlightedPre"></pre></div>
+          <textarea id="lessonEditor" aria-label="محرر الكود لهذا الدرس"></textarea>
+          <div class="btns">
+            <button id="runLessonBtn">تشغيل المحاكاة</button>
             <button class="secondary" id="resetLessonBtn">إعادة التعيين</button>
             <button class="success" id="saveLessonBtn">حفظ التقدم</button>
             <button class="danger" id="clearLessonBtn">مسح المحفوظ</button>
           </div>
-          <div id="lessonSavedAlert" class="alert">تم حفظ التقدم لهذا الدرس ✅</div>
-          <div class="code" style="margin-top:10px">
-            <pre id="lessonOutput">// المخرجات ستظهر هنا...</pre>
+          <div id="lessonSavedAlert" class="alert" role="status">تم حفظ التقدم لهذا الدرس ✅</div>
+
+          <h3>🖥️ نافذة Serial</h3>
+          <div class="code"><pre id="lessonOutput">// المخرجات ستظهر هنا...</pre></div>
+          <div class="btns">
+            <input id="serialInput" placeholder="أدخل مدخلًا كما لو أنه آتٍ من Serial..." style="flex:1; padding:10px; border-radius:10px; border:1px solid var(--border)" />
+            <button id="sendSerial" class="secondary">إرسال إدخال</button>
           </div>
 
-          <h3>📝 امتحان متابعة</h3>
+          <h3>🧯 فحص قواعد الكود</h3>
+          <div id="lintPanel" class="lesson-card"></div>
+
+          <h3>📝 امتحان متابعة عشوائي</h3>
           <div id="quizContainer"></div>
           <div id="quizResult" class="alert">نتيجة الامتحان ستظهر هنا</div>
         </div>
@@ -166,12 +241,36 @@
           </div>
           <div id="notesSavedAlert" class="alert">تم حفظ الملاحظات لهذا الدرس ✅</div>
 
-          <h3 style="margin-top:18px">📦 تثبيت كتطبيق</h3>
+          <h3 style="margin-top:18px">🏆 شهادة إتمام</h3>
+          <p class="muted">عند إكمال 70% من الاختبارات بنجاح، يمكنك توليد شهادة PDF مبسطة.</p>
+          <div class="btns">
+            <button id="generateCert" class="warn">توليد شهادة</button>
+          </div>
+
+          <h3 style="margin-top:18px">📦 التثبيت كتطبيق (PWA)</h3>
           <div class="install-banner" id="installBanner">
             <span>يمكنك تثبيت هذا الموقع كتطبيق على جهازك.</span>
             <button id="installBtn">تثبيت</button>
           </div>
-          <p class="muted">افتح الصفحة عبر http:// أو https:// لتفعيل التثبيت والخدمة.</p>
+          <p class="muted">يفضّل فتح الصفحة عبر http:// أو https:// لتفعيل التثبيت والخدمة.</p>
+
+          <h3 style="margin-top:18px">🛠️ إدارة المحتوى</h3>
+          <div class="lesson-card">
+            <p><strong>أضف درسًا جديدًا:</strong></p>
+            <div class="btns" style="gap:6px">
+              <input id="adminTitle" placeholder="عنوان الدرس" style="flex:1; padding:8px; border-radius:8px; border:1px solid var(--border)" />
+              <input id="adminVideo" placeholder="مسار الفيديو (mp4)" style="flex:1; padding:8px; border-radius:8px; border:1px solid var(--border)" />
+            </div>
+            <textarea id="adminIntro" placeholder="مقدمة الدرس"></textarea>
+            <textarea id="adminCode" placeholder="كود افتراضي"></textarea>
+            <div class="btns">
+              <button id="adminAdd" class="success">إضافة الدرس</button>
+            </div>
+            <div id="adminAlert" class="alert">تمت إضافة الدرس ✅</div>
+          </div>
+
+          <h3 style="margin-top:18px">🪵 سجل التعلم والأخطاء</h3>
+          <div class="code"><pre id="activityLog">// السجل سيظهر هنا...</pre></div>
         </div>
       </div>
     </section>
@@ -179,12 +278,27 @@
 
   <footer>
     <div class="wrap">
-      <p class="muted">© تعليم الأردوينو • واجهة زجاجية • SPA • ملف واحد</p>
+      <p class="muted" id="footerText">© تعليم الأردوينو • واجهة زجاجية • SPA • ملف واحد • ميزات متقدمة</p>
     </div>
   </footer>
 
   <script>
-    // ========== 0) توليد أيقونة ديناميكية ==========
+    // ========== أدوات عامة ==========
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    function logActivity(msg){
+      const t = new Date().toLocaleString();
+      const prev = localStorage.getItem('activity-log') || '';
+      const line = `[${t}] ${msg}\n`;
+      localStorage.setItem('activity-log', prev + line);
+      $('#activityLog').textContent = (prev + line).split('\n').slice(-100).join('\n') || '// السجل سيظهر هنا...';
+      $('#lastActivity').textContent = t;
+    }
+    window.addEventListener('error', e => {
+      logActivity(`خطأ: ${e.message}`);
+    });
+
+    // ========== توليد أيقونة ديناميكية ==========
     function generateIcon(size = 192) {
       const c = document.createElement('canvas'); c.width = size; c.height = size;
       const ctx = c.getContext('2d');
@@ -204,262 +318,244 @@
       return c.toDataURL('image/png');
     }
     (function showMiniIcon(){
-      const el = document.getElementById('dynamic-logo');
+      const el = $('#dynamic-logo');
       const url = generateIcon(64);
       el.style.backgroundImage = `url(${url})`;
       el.style.backgroundSize = 'cover';
       el.textContent = '';
     })();
 
-    // ========== 1) بيانات 10 دروس ==========
+    // ========== تعدد لغات بسيط ==========
+    const i18n = {
+      ar: {
+        subtitle: "واجهة زجاجية • SPA • ملف واحد • ميزات متقدمة",
+        footer: "© تعليم الأردوينو • واجهة زجاجية • SPA • ملف واحد • ميزات متقدمة",
+        searchHint: "نتائج البحث ستظهر أسفلًا مع إبراز الكلمات."
+      },
+      en: {
+        subtitle: "Glass UI • SPA • Single file • Advanced features",
+        footer: "© Arduino Learning • Glass UI • SPA • Single file",
+        searchHint: "Search results appear below with highlighted keywords."
+      }
+    };
+    const userLang = localStorage.getItem('lang') || 'ar';
+    function applyLang(lang){
+      document.documentElement.lang = lang;
+      localStorage.setItem('lang', lang);
+      $('#subtitle').textContent = i18n[lang].subtitle;
+      $('#footerText').textContent = i18n[lang].footer;
+      $('#searchHint').textContent = i18n[lang].searchHint;
+    }
+    applyLang(userLang);
+
+    // ========== ثيم داكن/فاتح ==========
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme === 'light' ? 'light' : 'dark');
+    $('#themeToggle').addEventListener('click', () => {
+      const now = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', now);
+      localStorage.setItem('theme', now);
+      logActivity(`تم تبديل الثيم إلى: ${now}`);
+    });
+
+    // ========== بيانات 10 دروس (قابلة للتوسيع) ==========
     const lessons = [
-      {
-        id: 1,
-        title: "المقدمة ووميض الليد",
-        video: "lesson1.mp4",
-        intro: "تعرف على منصة الأردوينو، تثبيت Arduino IDE، وتجربة أول مشروع: وميض الليد المدمج.",
-        defaultCode:
+      { id:1, title:"المقدمة ووميض الليد", video:"lesson1.mp4", intro:"تعرف على منصة الأردوينو وتجربة أول مشروع: وميض الليد.", defaultCode:
 `// Blink LED
-void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
-}
+void setup() { pinMode(LED_BUILTIN, OUTPUT); }
 void loop() {
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(1000);
-}
-`,
-        quiz: [
-          { q: "أي دالة تُنفّذ مرة واحدة عند بدء التشغيل؟", choices: ["setup()", "loop()"], answer: 0 },
-          { q: "ما هو المسمار الخاص بالليد المدمج؟", choices: ["LED_BUILTIN", "A0"], answer: 0 },
-        ]
+  digitalWrite(LED_BUILTIN, HIGH); delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);  delay(1000);
+}`, tags:["blink","basics","digital"], quizBank:[
+        { q:"الدالة التي تُنفّذ مرة واحدة؟", choices:["setup()","loop()"], answer:0, cat:"basics" },
+        { q:"المسمار للّيد المدمج؟", choices:["LED_BUILTIN","A0"], answer:0, cat:"digital" },
+        { q:"وظيفة delay؟", choices:["تأخير حاجز","قراءة تناظرية"], answer:0, cat:"timing" }
+      ]
       },
-      {
-        id: 2,
-        title: "المدخلات الرقمية: زر الضغط",
-        video: "lesson2.mp4",
-        intro: "قراءة حالة زر ضغط وتغيير حالة الليد بناءً على المدخل الرقمي.",
-        defaultCode:
-`int button = 2;
-void setup() {
-  pinMode(button, INPUT_PULLUP);
-  pinMode(LED_BUILTIN, OUTPUT);
-}
-void loop() {
-  int pressed = digitalRead(button) == LOW;
-  digitalWrite(LED_BUILTIN, pressed ? HIGH : LOW);
-}
-`,
-        quiz: [
-          { q: "لماذا نستخدم INPUT_PULLUP؟", choices: ["لتفعيل مقاومة سحب داخلية", "لتسريع المعالج"], answer: 0 },
-          { q: "ما قيمة القراءة عند ضغط الزر مع Pullup؟", choices: ["LOW", "HIGH"], answer: 0 },
-        ]
+      { id:2, title:"زر الضغط", video:"lesson2.mp4", intro:"قراءة زر ضغط باستخدام INPUT_PULLUP.", defaultCode:
+`int button=2;
+void setup(){ pinMode(button, INPUT_PULLUP); pinMode(LED_BUILTIN, OUTPUT); }
+void loop(){ bool pressed = digitalRead(button)==LOW; digitalWrite(LED_BUILTIN, pressed?HIGH:LOW); }`, tags:["button","digital"], quizBank:[
+        { q:"سبب استخدام INPUT_PULLUP؟", choices:["مقاومة سحب داخلية","تسريع المعالج"], answer:0, cat:"digital" },
+        { q:"قراءة الزر مع Pullup عند الضغط؟", choices:["LOW","HIGH"], answer:0, cat:"digital" }
+      ]
       },
-      {
-        id: 3,
-        title: "المدخلات التناظرية: حساس ضوئي",
-        video: "lesson3.mp4",
-        intro: "استخدم analogRead لقراءة حساس ضوئي على A0 وطباعة القيم عبر المنفذ التسلسلي.",
-        defaultCode:
-`int sensor = A0;
-void setup() { Serial.begin(9600); }
-void loop() {
-  int value = analogRead(sensor);
-  Serial.println(value);
-  delay(500);
-}
-`,
-        quiz: [
-          { q: "المدى الافتراضي لـ analogRead على أردوينو Uno؟", choices: ["0-1023", "0-255"], answer: 0 },
-          { q: "أي دالة تطبع على المراقب التسلسلي؟", choices: ["Serial.println()", "pinMode()"], answer: 0 },
-        ]
+      { id:3, title:"حساس ضوئي", video:"lesson3.mp4", intro:"قراءة حساس ضوئي على A0 باستخدام analogRead.", defaultCode:
+`int sensor=A0;
+void setup(){ Serial.begin(9600); }
+void loop(){ int v=analogRead(sensor); Serial.println(v); delay(500); }`, tags:["sensor","analog","serial"], quizBank:[
+        { q:"مدى analogRead (Uno)؟", choices:["0-1023","0-255"], answer:0, cat:"analog" },
+        { q:"الطباعة التسلسلية؟", choices:["Serial.println()","pinMode()"], answer:0, cat:"serial" }
+      ]
       },
-      {
-        id: 4,
-        title: "PWM التحكم في السطوع",
-        video: "lesson4.mp4",
-        intro: "استخدم analogWrite للتحكم في سطوع ليد على مسمار يدعم PWM.",
-        defaultCode:
-`int led = 9;
-void setup() { pinMode(led, OUTPUT); }
-void loop() {
-  for (int i=0;i<=255;i++){ analogWrite(led, i); delay(5); }
-  for (int i=255;i>=0;i--){ analogWrite(led, i); delay(5); }
-}
-`,
-        quiz: [
-          { q: "القيم المقبولة لـ analogWrite؟", choices: ["0-255", "0-1023"], answer: 0 },
-          { q: "هل كل المسامير تدعم PWM؟", choices: ["لا", "نعم"], answer: 0 },
-        ]
+      { id:4, title:"PWM سطوع", video:"lesson4.mp4", intro:"التحكم في السطوع عبر analogWrite.", defaultCode:
+`int led=9;
+void setup(){ pinMode(led, OUTPUT); }
+void loop(){
+  for(int i=0;i<=255;i++){ analogWrite(led,i); delay(5); }
+  for(int i=255;i>=0;i--){ analogWrite(led,i); delay(5); }
+}`, tags:["pwm","analogWrite"], quizBank:[
+        { q:"قيم analogWrite؟", choices:["0-255","0-1023"], answer:0, cat:"pwm" },
+        { q:"هل كل المسامير PWM؟", choices:["لا","نعم"], answer:0, cat:"pwm" }
+      ]
       },
-      {
-        id: 5,
-        title: "المؤقتات وتأخير غير حاجز",
-        video: "lesson5.mp4",
-        intro: "استخدم millis بدلاً من delay لبناء منطق غير حاجز يسمح بتنفيذ مهام متعددة.",
-        defaultCode:
-`unsigned long last = 0;
-const unsigned long interval = 1000;
+      { id:5, title:"millis بدون حجب", video:"lesson5.mp4", intro:"استخدام millis بدل delay لبناء منطق غير حاجز.", defaultCode:
+`unsigned long last=0; const unsigned long interval=1000;
 void setup(){ pinMode(LED_BUILTIN, OUTPUT); }
 void loop(){
-  unsigned long now = millis();
-  if(now - last >= interval){
-    last = now;
-    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-  }
-}
-`,
-        quiz: [
-          { q: "ما الفرق الأساسي بين delay و millis؟", choices: ["delay يحجب التنفيذ", "millis يحجب التنفيذ"], answer: 0 },
-          { q: "الوحدة المستخدمة مع millis؟", choices: ["ميلي ثانية", "ثانية"], answer: 0 },
-        ]
+  unsigned long now=millis();
+  if(now-last>=interval){ last=now; digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); }
+}`, tags:["timing","millis"], quizBank:[
+        { q:"delay مقابل millis؟", choices:["delay يحجب","millis يحجب"], answer:0, cat:"timing" },
+        { q:"وحدة millis؟", choices:["ميلي ثانية","ثانية"], answer:0, cat:"timing" }
+      ]
       },
-      {
-        id: 6,
-        title: "المكتبات والتوسعات",
-        video: "lesson6.mp4",
-        intro: "إضافة مكتبات عبر Library Manager واستخدامها مع الحساسات والمحركات.",
-        defaultCode:
-`// مثال نظري لاستخدام مكتبة
-#include <Wire.h>
+      { id:6, title:"المكتبات", video:"lesson6.mp4", intro:"استخدام المكتبات مع Library Manager.", defaultCode:
+`#include <Wire.h>
 void setup(){ Wire.begin(); Serial.begin(9600); Serial.println("Ready"); }
-void loop(){ /* تعامل مع الجهاز عبر I2C */ }
-`,
-        quiz: [
-          { q: "أين تضيف المكتبات في Arduino IDE؟", choices: ["Library Manager", "Board Manager"], answer: 0 },
-          { q: "البروتوكول الذي يستخدم SDA/SCL؟", choices: ["I2C", "SPI"], answer: 0 },
-        ]
+void loop(){ /* I2C */ }`, tags:["libraries","i2c"], quizBank:[
+        { q:"أين تضيف المكتبات؟", choices:["Library Manager","Board Manager"], answer:0, cat:"libraries" },
+        { q:"البروتوكول SDA/SCL؟", choices:["I2C","SPI"], answer:0, cat:"i2c" }
+      ]
       },
-      {
-        id: 7,
-        title: "الاتصال التسلسلي والاتصال بالحاسوب",
-        video: "lesson7.mp4",
-        intro: "التخاطب عبر Serial مع الحاسوب لقراءة وإرسال البيانات.",
-        defaultCode:
+      { id:7, title:"Serial متقدم", video:"lesson7.mp4", intro:"التخاطب عبر Serial مع الحاسوب.", defaultCode:
 `void setup(){ Serial.begin(9600); }
 void loop(){
   if(Serial.available()){
-    char c = Serial.read();
+    char c=Serial.read();
     Serial.print("You typed: "); Serial.println(c);
   }
-}
-`,
-        quiz: [
-          { q: "ما الدالة التي تعيد عدد البايتات المتاحة للقراءة؟", choices: ["Serial.available()", "Serial.begin()"], answer: 0 },
-          { q: "القيمة الشائعة لبود ريت؟", choices: ["9600", "1"], answer: 0 },
-        ]
+}`, tags:["serial"], quizBank:[
+        { q:"عدد البايتات المتاحة؟", choices:["Serial.available()","Serial.begin()"], answer:0, cat:"serial" },
+        { q:"بود ريت شائع؟", choices:["9600","1"], answer:0, cat:"serial" }
+      ]
       },
-      {
-        id: 8,
-        title: "المحركات المؤازرة (Servo)",
-        video: "lesson8.mp4",
-        intro: "تحريك سيرفو عبر مكتبة Servo لزاويا محددة.",
-        defaultCode:
+      { id:8, title:"Servo", video:"lesson8.mp4", intro:"تحريك سيرفو عبر مكتبة Servo.", defaultCode:
 `#include <Servo.h>
 Servo s;
 void setup(){ s.attach(9); }
-void loop(){
-  for(int a=0; a<=180; a+=10){ s.write(a); delay(200); }
-}
-`,
-        quiz: [
-          { q: "ما المكتبة المستخدمة للسيرفو؟", choices: ["Servo", "Wire"], answer: 0 },
-          { q: "مدى الزوايا المعتاد للسيرفو؟", choices: ["0-180", "0-360"], answer: 0 },
-        ]
+void loop(){ for(int a=0;a<=180;a+=10){ s.write(a); delay(200); } }`, tags:["servo"], quizBank:[
+        { q:"المكتبة للسيرفو؟", choices:["Servo","Wire"], answer:0, cat:"servo" },
+        { q:"مدى الزوايا؟", choices:["0-180","0-360"], answer:0, cat:"servo" }
+      ]
       },
-      {
-        id: 9,
-        title: "الاتصال اللاسلكي الأساسي",
-        video: "lesson9.mp4",
-        intro: "مقدمة عن الوحدات اللاسلكية مثل NRF24L01 أو بلوتوث HC-05.",
-        defaultCode:
-`// مثال تصوري، يتطلب إعدادات الجهاز
-void setup(){ Serial.begin(9600); Serial.println("Wireless intro"); }
-void loop(){ /* إرسال/استقبال */ }
-`,
-        quiz: [
-          { q: "ما الوحدة الشائعة للبلوتوث الكلاسيكي؟", choices: ["HC-05", "ESP-01"], answer: 0 },
-          { q: "NRF24L01 يعمل على بروتوكول؟", choices: ["2.4GHz RF", "I2C فقط"], answer: 0 },
-        ]
+      { id:9, title:"لاسلكي أساسي", video:"lesson9.mp4", intro:"مقدمة عن NRF24L01 وHC-05.", defaultCode:
+`void setup(){ Serial.begin(9600); Serial.println("Wireless intro"); }
+void loop(){ /* إرسال/استقبال */ }`, tags:["wireless"], quizBank:[
+        { q:"وحدة بلوتوث شائعة؟", choices:["HC-05","ESP-01"], answer:0, cat:"wireless" },
+        { q:"NRF24L01 يعمل على؟", choices:["2.4GHz RF","I2C فقط"], answer:0, cat:"wireless" }
+      ]
       },
-      {
-        id: 10,
-        title: "مشروع مصغر: محطة طقس",
-        video: "lesson10.mp4",
-        intro: "جمع قراءات حساسات وتسجيلها وعرضها عبر Serial—أساسيات مشروع محطة طقس.",
-        defaultCode:
-`// Skeleton لمحطة طقس
-void setup(){ Serial.begin(9600); }
+      { id:10, title:"مشروع: محطة طقس", video:"lesson10.mp4", intro:"جمع قراءات وعرضها عبر Serial.", defaultCode:
+`void setup(){ Serial.begin(9600); }
 void loop(){
-  int temp = 25; // مثال
-  int hum  = 60; // مثال
+  int temp=25; int hum=60;
   Serial.print("T: "); Serial.print(temp);
-  Serial.print(" C, H: "); Serial.print(hum);
-  Serial.println(" %");
+  Serial.print(" C, H: "); Serial.print(hum); Serial.println(" %");
   delay(1000);
-}
-`,
-        quiz: [
-          { q: "المتغير الأنسب لدرجات الحرارة الصحيحة؟", choices: ["int أو float حسب الحساس", "char"], answer: 0 },
-          { q: "الغرض من Serial.print؟", choices: ["عرض البيانات", "تبديل المسامير"], answer: 0 },
-        ]
+}`, tags:["project","weather"], quizBank:[
+        { q:"نوع المتغير للحرارة؟", choices:["int/float","char"], answer:0, cat:"project" },
+        { q:"وظيفة Serial.print؟", choices:["عرض البيانات","تبديل المسامير"], answer:0, cat:"serial" }
+      ]
       }
     ];
+    // عدّاد الدروس
+    $('#totalCount').textContent = lessons.length.toString();
 
-    // ========== 2) بناء الصفحة الرئيسية من بيانات الدروس ==========
-    const lessonsList = document.getElementById('lessonsList');
+    // ========== بناء الرئيسية ==========
+    const lessonsList = $('#lessonsList');
+    function lessonCard(ls){
+      const div = document.createElement('div');
+      div.className = 'lesson-card';
+      const tags = ls.tags.map(t => `<span class="pill">${t}</span>`).join(' ');
+      div.innerHTML = `
+        <h3>🎓 ${ls.title}</h3>
+        <p class="muted">${ls.intro}</p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap">${tags}</div>
+        <div class="actions">
+          <a class="nav-link" href="#/lesson/${ls.id}">افتح الدرس</a>
+          <span class="pill">درس رقم ${ls.id}</span>
+        </div>
+      `;
+      return div;
+    }
     function renderHome(){
       lessonsList.innerHTML = '';
-      lessons.forEach(ls => {
+      lessons.forEach(ls => lessonsList.appendChild(lessonCard(ls)));
+    }
+
+    // ========== بحث ==========
+    const searchInput = $('#searchInput');
+    const searchResults = $('#searchResults');
+    function highlight(text, terms){
+      let out = text;
+      terms.forEach(t => {
+        const re = new RegExp(`(${t})`, 'ig');
+        out = out.replace(re, '<mark>$1</mark>');
+      });
+      return out;
+    }
+    function doSearch(){
+      const q = searchInput.value.trim();
+      searchResults.innerHTML = '';
+      if (!q){ return; }
+      const terms = q.split(/\s+/).filter(Boolean);
+      const hits = lessons.filter(ls => {
+        const blob = `${ls.title} ${ls.intro} ${ls.tags.join(' ')}`;
+        return terms.every(t => blob.toLowerCase().includes(t.toLowerCase()));
+      });
+      hits.forEach(ls => {
         const card = document.createElement('div');
         card.className = 'lesson-card';
         card.innerHTML = `
-          <h3>🎓 ${ls.title}</h3>
-          <p class="muted">${ls.intro}</p>
+          <h3>🎓 ${highlight(ls.title, terms)}</h3>
+          <p class="muted">${highlight(ls.intro, terms)}</p>
           <div class="actions">
             <a class="nav-link" href="#/lesson/${ls.id}">افتح الدرس</a>
-            <span class="pill">درس رقم ${ls.id}</span>
-          </div>
-        `;
-        lessonsList.appendChild(card);
+          </div>`;
+        searchResults.appendChild(card);
       });
     }
+    searchInput.addEventListener('input', doSearch);
 
-    // ========== 3) التوجيه البسيط عبر الهاش ==========
-    const homePage = document.getElementById('homePage');
-    const lessonPage = document.getElementById('lessonPage');
-    const lessonTitle = document.getElementById('lessonTitle');
-    const lessonVideoSrc = document.getElementById('lessonVideoSrc');
-    const lessonIntro = document.getElementById('lessonIntro');
-    const lessonEditor = document.getElementById('lessonEditor');
-    const lessonOutput = document.getElementById('lessonOutput');
-    const lessonSavedAlert = document.getElementById('lessonSavedAlert');
-    const quizContainer = document.getElementById('quizContainer');
-    const quizResult = document.getElementById('quizResult');
-    const notesArea = document.getElementById('notesArea');
-    const notesSavedAlert = document.getElementById('notesSavedAlert');
-
+    // ========== التوجيه ==========
+    const homePage = $('#homePage');
+    const lessonPage = $('#lessonPage');
+    const lessonTitle = $('#lessonTitle');
+    const lessonVideoSrc = $('#lessonVideoSrc');
+    const lessonIntro = $('#lessonIntro');
+    const lessonEditor = $('#lessonEditor');
+    const lessonOutput = $('#lessonOutput');
+    const lessonSavedAlert = $('#lessonSavedAlert');
+    const quizContainer = $('#quizContainer');
+    const quizResult = $('#quizResult');
+    const notesArea = $('#notesArea');
+    const notesSavedAlert = $('#notesSavedAlert');
+    const highlightedPre = $('#highlightedPre');
     let currentLessonId = null;
 
     function setActiveNav(){
-      document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+      $$('.nav-link').forEach(a => a.classList.remove('active'));
       const hash = location.hash || '#/';
       const match = document.querySelector(`.nav-link[href="${hash}"]`);
       if (match) match.classList.add('active');
     }
-
     function route(){
       const hash = location.hash || '#/';
       setActiveNav();
       if (hash === '#/' || hash === '#') {
+        overview.style.display = 'block';
+        $('#searchSection').style.display = 'block';
         homePage.style.display = 'block';
         lessonPage.style.display = 'none';
         renderHome();
+        renderProgressPanel();
         return;
       }
       const m = hash.match(/^#\/lesson\/(\d+)$/);
       if (m){
+        overview.style.display = 'none';
+        $('#searchSection').style.display = 'none';
         const id = parseInt(m[1], 10);
         const ls = lessons.find(x => x.id === id);
         if (!ls){ location.hash = '#/'; return; }
@@ -468,17 +564,18 @@ void loop(){
         lessonPage.style.display = 'block';
         lessonTitle.textContent = `🎓 ${ls.title}`;
         lessonVideoSrc.src = ls.video || '';
-        document.getElementById('lessonVideo').load();
+        $('#lessonVideo').load();
         lessonIntro.textContent = ls.intro;
         // Load editor content
         const savedCode = localStorage.getItem(`lesson-${id}-code`);
         lessonEditor.value = savedCode ?? ls.defaultCode;
+        renderHighlight();
         lessonOutput.textContent = '// المخرجات ستظهر هنا...';
         // Notes
         const savedNotes = localStorage.getItem(`lesson-${id}-notes`);
         notesArea.value = savedNotes ?? '';
-        // Quiz render
-        renderQuiz(ls.quiz);
+        // Quiz render (عشوائية)
+        renderQuiz(ls.quizBank);
         const savedScore = localStorage.getItem(`lesson-${id}-quiz`);
         if (savedScore){
           quizResult.style.display = 'block';
@@ -487,48 +584,94 @@ void loop(){
         } else {
           quizResult.style.display = 'none';
         }
+        logActivity(`فتح الدرس ${id}: ${ls.title}`);
       } else {
         location.hash = '#/';
       }
     }
     window.addEventListener('hashchange', route);
-    route();
 
-    // ========== 4) تشغيل الكود (محاكاة Serial.println) ==========
-    document.getElementById('runLessonBtn').addEventListener('click', () => {
+    // ========== تلوين نحوي بسيط ==========
+    function renderHighlight(){
       const code = lessonEditor.value;
+      let h = code;
+      h = h.replace(/(\/\/.*?$)/mg, '<span class="com">$1</span>');
+      h = h.replace(/\b(void|int|float|bool|char|for|if|else|return|include)\b/g, '<span class="kw">$1</span>');
+      h = h.replace(/\b(Serial|pinMode|digitalWrite|digitalRead|analogRead|analogWrite|delay|millis|println|print|begin|available|read|attach|write)\b/g, '<span class="fn">$1</span>');
+      h = h.replace(/("[^"]*")/g, '<span class="str">$1</span>');
+      h = h.replace(/\b(\d+)\b/g, '<span class="num">$1</span>');
+      highlightedPre.innerHTML = h;
+    }
+    lessonEditor.addEventListener('input', renderHighlight);
+
+    // ========== قوالب جاهزة ==========
+    const templates = {
+      blink: `// Blink LED
+void setup(){ pinMode(LED_BUILTIN, OUTPUT); }
+void loop(){ digitalWrite(LED_BUILTIN,HIGH); delay(500); digitalWrite(LED_BUILTIN,LOW); delay(500); }`,
+      button: `int button=2;
+void setup(){ pinMode(button, INPUT_PULLUP); pinMode(LED_BUILTIN, OUTPUT); }
+void loop(){ bool pressed=digitalRead(button)==LOW; digitalWrite(LED_BUILTIN, pressed?HIGH:LOW); }`,
+      servo: `#include <Servo.h>
+Servo s; void setup(){ s.attach(9); }
+void loop(){ for(int a=0;a<=180;a+=10){ s.write(a); delay(100); } }`,
+      sensor: `int sensor=A0;
+void setup(){ Serial.begin(9600); }
+void loop(){ int v=analogRead(sensor); Serial.println(v); delay(500); }`
+    };
+    $('#templateBlink').addEventListener('click', ()=>{ lessonEditor.value=templates.blink; renderHighlight(); });
+    $('#templateButton').addEventListener('click', ()=>{ lessonEditor.value=templates.button; renderHighlight(); });
+    $('#templateServo').addEventListener('click', ()=>{ lessonEditor.value=templates.servo; renderHighlight(); });
+    $('#templateSensor').addEventListener('click', ()=>{ lessonEditor.value=templates.sensor; renderHighlight(); });
+
+    // ========== تشغيل المحاكاة (Serial.print/println) ==========
+    const serialBuffer = [];
+    function simulateRun(code){
+      // طباعة println
+      const printlnMatches = code.match(/Serial\.println\((.*?)\);/g) || [];
+      const printMatches   = code.match(/Serial\.print\((.*?)\);/g) || [];
       const lines = [];
-      const matches = code.match(/Serial\.println\((.*?)\);/g) || [];
-      if (matches.length === 0) {
-        lines.push('لا توجد طباعة عبر Serial.println() في الكود.');
-      } else {
-        matches.forEach(m => {
-          const inner = m.replace(/^Serial\.println\(/,'').replace(/\);\s*$/,'');
-          try {
-            const text = Function(`return (${inner})`)();
-            lines.push(String(text));
-          } catch {
-            lines.push(inner);
-          }
-        });
-      }
-      lessonOutput.textContent = lines.length ? lines.join('\n') : '—';
+      const evalArg = (inner) => {
+        try { return String(Function(`return (${inner})`)()); } catch { return String(inner); }
+      };
+      printlnMatches.forEach(m => {
+        const inner = m.replace(/^Serial\.println\(/,'').replace(/\);\s*$/,'');
+        lines.push(evalArg(inner));
+      });
+      // دمج print كخط واحد (تقريبي)
+      let lineBuf = '';
+      printMatches.forEach(m => {
+        const inner = m.replace(/^Serial\.print\(/,'').replace(/\);\s*$/,'');
+        lineBuf += evalArg(inner);
+      });
+      if (lineBuf) lines.push(lineBuf);
+      return lines.length ? lines.join('\n') : '—';
+    }
+    $('#runLessonBtn').addEventListener('click', () => {
+      const out = simulateRun(lessonEditor.value);
+      lessonOutput.textContent = out;
+      logActivity(`تشغيل محاكاة الدرس ${currentLessonId}`);
+      // تحديث التقدم: اعتبار التشغيل خطوة إكمال
+      markLessonProgress(currentLessonId, 'run');
+      renderProgressPanel();
     });
-    document.getElementById('resetLessonBtn').addEventListener('click', () => {
+    $('#resetLessonBtn').addEventListener('click', () => {
       const ls = lessons.find(x => x.id === currentLessonId);
       if (!ls) return;
       lessonEditor.value = ls.defaultCode;
+      renderHighlight();
       lessonOutput.textContent = '// المخرجات ستظهر هنا...';
     });
-    document.getElementById('saveLessonBtn').addEventListener('click', () => {
+    $('#saveLessonBtn').addEventListener('click', () => {
       if (!currentLessonId) return;
       try {
         localStorage.setItem(`lesson-${currentLessonId}-code`, lessonEditor.value);
         lessonSavedAlert.style.display = 'block';
         setTimeout(() => lessonSavedAlert.style.display = 'none', 2000);
+        logActivity(`حفظ كود الدرس ${currentLessonId}`);
       } catch {}
     });
-    document.getElementById('clearLessonBtn').addEventListener('click', () => {
+    $('#clearLessonBtn').addEventListener('click', () => {
       if (!currentLessonId) return;
       localStorage.removeItem(`lesson-${currentLessonId}-code`);
       localStorage.removeItem(`lesson-${currentLessonId}-quiz`);
@@ -536,56 +679,239 @@ void loop(){
       lessonOutput.textContent = '// المخرجات ستظهر هنا...';
       notesArea.value = '';
       quizResult.style.display = 'none';
+      logActivity(`مسح بيانات الدرس ${currentLessonId}`);
     });
 
-    // ========== 5) الملاحظات ==========
-    document.getElementById('saveNotesBtn').addEventListener('click', () => {
-      if (!currentLessonId) return;
-      try {
-        localStorage.setItem(`lesson-${currentLessonId}-notes`, notesArea.value);
-        notesSavedAlert.style.display = 'block';
-        setTimeout(() => notesSavedAlert.style.display = 'none', 2000);
-      } catch {}
+    // نافذة Serial إدخال محاكاة
+    $('#sendSerial').addEventListener('click', () => {
+      const v = $('#serialInput').value;
+      if (!v) return;
+      serialBuffer.push(v);
+      lessonOutput.textContent += `\n[IN] ${v}`;
+      $('#serialInput').value = '';
     });
 
-    // ========== 6) نظام الامتحان لكل درس ==========
-    function renderQuiz(quiz){
+    // ========== فحص قواعد مبسط ==========
+    function lintCode(code){
+      const issues = [];
+      // تحذير: استخدام delay طويل
+      if (code.match(/delay\(\s*(\d{4,})\s*\)/)) issues.push({type:'warn', msg:'استخدام delay طويل قد يحجب التنفيذ. فكّر في استخدام millis.'});
+      // تحذير: استخدام Serial.println بدون Serial.begin
+      if (code.match(/Serial\.(print|println)\(/) && !code.match(/Serial\.begin\(/)) issues.push({type:'warn', msg:'تستخدم Serial بدون تهيئة Serial.begin(9600).'});
+      // تحذير: قراءة/كتابة بدون pinMode
+      if (code.match(/digital(Read|Write)\(/) && !code.match(/pinMode\(/)) issues.push({type:'warn', msg:'تأكد من تهيئة المسامير عبر pinMode قبل القراءة/الكتابة.'});
+      // معلومة: حلقات for كبيرة بدون تأخير
+      if (code.match(/for\s*\(.*\)\s*\{[^}]*\}/) && !code.match(/delay\(/)) issues.push({type:'info', msg:'حلقة كبيرة بدون تأخير؛ قد تعمل بسرعة عالية.'});
+      return issues;
+    }
+    function renderLint(){
+      const issues = lintCode(lessonEditor.value);
+      const panel = $('#lintPanel'); panel.innerHTML = '';
+      if (!issues.length){ panel.innerHTML = '<p>✅ لا توجد ملاحظات رئيسية.</p>'; return; }
+      issues.forEach(i => {
+        const d = document.createElement('div'); d.className = 'badge';
+        const color = i.type==='warn' ? '⚠️' : i.type==='info' ? 'ℹ️' : '❌';
+        d.innerHTML = `${color} ${i.msg}`;
+        panel.appendChild(d);
+      });
+    }
+    lessonEditor.addEventListener('input', renderLint);
+
+    // ========== امتحان عشوائي وتحليلات ==========
+    function shuffle(arr){ return arr.map(a=>({a, r:Math.random()})).sort((x,y)=>x.r-y.r).map(x=>x.a); }
+    function renderQuiz(bank){
       quizContainer.innerHTML = '';
-      quiz.forEach((item, idx) => {
+      const pick = shuffle(bank).slice(0, Math.min(3, bank.length));
+      let score = 0, answered = 0;
+      pick.forEach((item, idx) => {
         const w = document.createElement('div');
         w.className = 'lesson-card';
-        const buttons = item.choices.map((c, i) =>
-          `<button class="${i===item.answer?'':'secondary'}" data-qi="${idx}" data-ci="${i}">${c}</button>`).join(' ');
+        const choices = shuffle(item.choices.map((c,i)=>({c,i})));
+        const buttons = choices.map(ch => `<button class="secondary" data-qi="${idx}" data-ci="${ch.i}">${ch.c}</button>`).join(' ');
         w.innerHTML = `<p><strong>سؤال ${idx+1}:</strong> ${item.q}</p><div class="btns">${buttons}</div>`;
         quizContainer.appendChild(w);
       });
       quizResult.style.display = 'none';
-      let score = 0, answered = 0;
       quizContainer.querySelectorAll('button').forEach(btn => {
         btn.addEventListener('click', () => {
           const qi = parseInt(btn.dataset.qi, 10);
           const ci = parseInt(btn.dataset.ci, 10);
           const ls = lessons.find(x => x.id === currentLessonId);
-          const correct = ls.quiz[qi].answer;
-          if (ci === correct){
-            score++;
-            btn.classList.remove('secondary');
-            btn.classList.add('success');
-          } else {
-            btn.classList.remove('secondary');
-            btn.classList.add('danger');
-          }
+          const correct = pick[qi].answer;
+          const cat = pick[qi].cat;
+          if (ci === correct){ score++; btn.classList.add('success'); }
+          else { btn.classList.add('danger'); }
           // disable all buttons of this question
           quizContainer.querySelectorAll(`button[data-qi="${qi}"]`).forEach(b => b.disabled = true);
           answered++;
           quizResult.style.display = 'block';
           quizResult.textContent = `أجبت على ${answered} سؤال(اً) • نتيجتك: ${score}/${answered}`;
           localStorage.setItem(`lesson-${currentLessonId}-quiz`, JSON.stringify({score, answered}));
+          // تسجيل التحليلات
+          const analytics = JSON.parse(localStorage.getItem('quiz-analytics') || '{}');
+          analytics[cat] = (analytics[cat]||0) + (ci===correct?1:0);
+          localStorage.setItem('quiz-analytics', JSON.stringify(analytics));
+          markLessonProgress(currentLessonId, 'quiz');
+          renderProgressPanel();
         });
       });
     }
 
-    // ========== 7) PWA: manifest داخل نفس الملف ==========
+    // ========== حفظ الملاحظات ==========
+    $('#saveNotesBtn').addEventListener('click', () => {
+      if (!currentLessonId) return;
+      try {
+        localStorage.setItem(`lesson-${currentLessonId}-notes`, notesArea.value);
+        notesSavedAlert.style.display = 'block';
+        setTimeout(() => notesSavedAlert.style.display = 'none', 2000);
+        logActivity(`حفظ ملاحظات الدرس ${currentLessonId}`);
+        markLessonProgress(currentLessonId, 'notes');
+        renderProgressPanel();
+      } catch {}
+    });
+
+    // ========== التقدم والبادجات والمخطط ==========
+    function markLessonProgress(id, action){
+      const k = `lesson-${id}-progress`;
+      const p = JSON.parse(localStorage.getItem(k) || '{}');
+      p[action] = true;
+      localStorage.setItem(k, JSON.stringify(p));
+    }
+    function calcCompleted(){
+      let completed = 0;
+      lessons.forEach(ls => {
+        const p = JSON.parse(localStorage.getItem(`lesson-${ls.id}-progress`) || '{}');
+        if (p.run && p.quiz) completed++;
+      });
+      return completed;
+    }
+    function renderProgressPanel(){
+      const completed = calcCompleted();
+      $('#completedCount').textContent = completed.toString();
+      const pct = Math.round((completed/lessons.length)*100);
+      $('#progressBar').style.width = pct+'%';
+      // بادجات
+      const b = $('#badges'); b.innerHTML = '';
+      if (pct>=10) b.innerHTML += `<div class="badge">🎖️ بداية قوية</div>`;
+      if (pct>=50) b.innerHTML += `<div class="badge">🏅 نصف الطريق</div>`;
+      if (pct>=100) b.innerHTML += `<div class="badge">🏆 إنجاز كامل</div>`;
+      renderChart();
+    }
+    function renderChart(){
+      const cvs = $('#progressChart'), ctx = cvs.getContext('2d');
+      ctx.clearRect(0,0,cvs.width,cvs.height);
+      const w = cvs.width, h = cvs.height;
+      // رسم بسيط: الأعمدة حسب عدد الدروس المكتملة لكل 5 دروس
+      const bins = [0,0];
+      lessons.forEach(ls => {
+        const p = JSON.parse(localStorage.getItem(`lesson-${ls.id}-progress`) || '{}');
+        const done = (p.run?1:0)+(p.quiz?1:0)+(p.notes?1:0);
+        if (ls.id<=5) bins[0]+=done; else bins[1]+=done;
+      });
+      const max = Math.max(...bins,1);
+      const barW = (w-60)/bins.length, base = h-30;
+      bins.forEach((v,i)=>{
+        const bh = Math.round((v/max)*(h-60));
+        ctx.fillStyle = i===0 ? '#0aa2b8' : '#4caf50';
+        ctx.fillRect(30 + i*barW, base - bh, barW - 20, bh);
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text');
+        ctx.fillText(i===0?'دروس 1-5':'دروس 6-10', 30 + i*barW, base + 16);
+        ctx.fillText(v.toString(), 30 + i*barW, base - bh - 6);
+      });
+    }
+    window.addEventListener('resize', renderChart);
+
+    // ========== شهادة PDF مبسطة ==========
+    function generateCertificate(){
+      const completed = calcCompleted();
+      const pct = Math.round((completed/lessons.length)*100);
+      if (pct < 70){ alert('يلزم إكمال 70% على الأقل للحصول على شهادة.'); return; }
+      const name = prompt('اكتب اسمك على الشهادة:') || 'متعلم الأردوينو';
+      // توليد PDF بسيط عبر Data URL (نص/صورة داخل Canvas ثم حفظ كصورة)
+      const c = document.createElement('canvas'); c.width = 900; c.height = 600;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,c.width,c.height);
+      ctx.fillStyle = '#0aa2b8'; ctx.fillRect(0,0,c.width,80);
+      ctx.fillStyle = '#08343f'; ctx.font = 'bold 36px system-ui';
+      ctx.fillText('شهادة إتمام — تعلم الأردوينو', 20, 50);
+      ctx.fillStyle = '#333'; ctx.font = '24px system-ui';
+      ctx.fillText(`يُمنح ${name} هذه الشهادة لإتمامه ${pct}% من الدورة.`, 20, 160);
+      ctx.font = '20px system-ui';
+      ctx.fillText(`رقم تحقق: ARD-${Date.now()}`, 20, 220);
+      const icon = generateIcon(128);
+      const img = new Image(); img.onload = ()=>{
+        ctx.drawImage(img, c.width-170, 130, 128, 128);
+        const url = c.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = url; a.download = `certificate-${name}.png`;
+        a.click();
+      }; img.src = icon;
+    }
+    $('#generateCert').addEventListener('click', generateCertificate);
+
+    // ========== تصدير/استيراد JSON ==========
+    function exportProgress(){
+      const data = {};
+      lessons.forEach(ls => {
+        data[`lesson-${ls.id}-code`] = localStorage.getItem(`lesson-${ls.id}-code`);
+        data[`lesson-${ls.id}-notes`] = localStorage.getItem(`lesson-${ls.id}-notes`);
+        data[`lesson-${ls.id}-quiz`] = localStorage.getItem(`lesson-${ls.id}-quiz`);
+        data[`lesson-${ls.id}-progress`] = localStorage.getItem(`lesson-${ls.id}-progress`);
+      });
+      data['quiz-analytics'] = localStorage.getItem('quiz-analytics');
+      data['activity-log'] = localStorage.getItem('activity-log');
+      const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'arduino-progress.json'; a.click();
+      URL.revokeObjectURL(url);
+      logActivity('تم تصدير التقدم');
+    }
+    function importProgress(){
+      const inp = document.createElement('input');
+      inp.type = 'file'; inp.accept = 'application/json';
+      inp.onchange = () => {
+        const file = inp.files[0]; if (!file) return;
+        const fr = new FileReader();
+        fr.onload = () => {
+          try {
+            const data = JSON.parse(fr.result);
+            Object.keys(data).forEach(k => {
+              if (data[k] !== null && data[k] !== undefined) localStorage.setItem(k, data[k]);
+            });
+            alert('تم الاستيراد بنجاح.');
+            logActivity('تم استيراد التقدم');
+            renderProgressPanel(); route();
+          } catch(e){ alert('ملف غير صالح.'); }
+        };
+        fr.readAsText(file);
+      };
+      inp.click();
+    }
+    $('#exportBtn').addEventListener('click', exportProgress);
+    $('#importBtn').addEventListener('click', importProgress);
+
+    // ========== إدارة المحتوى (إضافة درس) ==========
+    $('#adminAdd').addEventListener('click', () => {
+      const title = $('#adminTitle').value.trim();
+      const video = $('#adminVideo').value.trim();
+      const intro = $('#adminIntro').value.trim();
+      const code  = $('#adminCode').value.trim();
+      if (!title || !intro || !code){ alert('أكمل الحقول المطلوبة.'); return; }
+      const newId = (lessons[lessons.length-1]?.id || 0) + 1;
+      lessons.push({
+        id:newId, title, video, intro, defaultCode:code, tags:["custom"], quizBank:[
+          { q:"سؤال تمهيدي؟", choices:["صحيح","خطأ"], answer:0, cat:"custom" }
+        ]
+      });
+      $('#adminAlert').style.display = 'block'; setTimeout(()=>$('#adminAlert').style.display='none', 2000);
+      renderHome();
+      logActivity(`تمت إضافة درس جديد: ${newId} — ${title}`);
+      // تحديث التعداد
+      $('#totalCount').textContent = lessons.length.toString();
+    });
+
+    // ========== PWA: manifest داخل نفس الملف ==========
     const icon192 = generateIcon(192);
     const icon512 = generateIcon(512);
     const manifest = {
@@ -609,9 +935,9 @@ void loop(){
     linkManifest.href = manifestURL;
     document.head.appendChild(linkManifest);
 
-    // ========== 8) Service Worker داخل نفس الملف ==========
+    // ========== Service Worker موسّع ==========
     const swCode = `
-      const CACHE_NAME = 'arduino-learn-v2';
+      const CACHE_NAME = 'arduino-learn-adv-v1';
       const APP_SHELL = ['./'];
       self.addEventListener('install', (event) => {
         event.waitUntil(
@@ -639,7 +965,7 @@ void loop(){
               return res;
             }).catch(() => {
               if (req.mode === 'navigate') {
-                return new Response('<h1 style="font-family:sans-serif">أنت غير متصل</h1><p>افتح الصفحة مرة أخرى عند الاتصال.</p>', { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+                return new Response('<h1 style="font-family:sans-serif">أنت غير متصل</h1><p>يمكنك متابعة تصفح الدروس المحفوظة.</p>', { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
               }
             });
           })
@@ -652,25 +978,45 @@ void loop(){
       navigator.serviceWorker.register(swURL).catch(()=>{});
     }
 
-    // ========== 9) زر التثبيت ==========
+    // ========== زر التثبيت ==========
     let deferredPrompt = null;
-    const banner = document.getElementById('installBanner');
-    const installBtn = document.getElementById('installBtn');
+    const banner = $('#installBanner');
+    const installBtn = $('#installBtn');
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       banner.style.display = 'flex';
     });
-    installBtn.addEventListener('click', async () => {
+    installBtn?.addEventListener('click', async () => {
       if (!deferredPrompt) return;
       await deferredPrompt.prompt();
       await deferredPrompt.userChoice;
       banner.style.display = 'none';
       deferredPrompt = null;
+      logActivity('تم تثبيت التطبيق');
     });
 
-    // ========== 10) تهيئة أولية ==========
-    renderHome();
+    // ========== تحميل كسول للفيديو ==========
+    const videoEl = $('#lessonVideo');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting){
+          videoEl.preload = 'auto';
+        }
+      });
+    });
+    observer.observe(videoEl);
+
+    // ========== تهيئة ==========
+    function init(){
+      $('#activityLog').textContent = (localStorage.getItem('activity-log') || '// السجل سيظهر هنا...');
+      renderHome();
+      renderProgressPanel();
+      route();
+      renderLint();
+      renderHighlight();
+    }
+    init();
   </script>
 </body>
 </html>
